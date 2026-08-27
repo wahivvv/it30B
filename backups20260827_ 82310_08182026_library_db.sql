@@ -62,7 +62,7 @@ CREATE TABLE `borrow` (
   `student_id` int(11) NOT NULL,
   `book_id` int(11) NOT NULL,
   `borrow_date` timestamp NOT NULL DEFAULT current_timestamp(),
-  `borrow_return_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `borrow_return_date` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`borrow_id`),
   KEY `fk_borrow_student` (`student_id`),
   KEY `fk_borrow_book` (`book_id`),
@@ -77,6 +77,7 @@ CREATE TABLE `borrow` (
 
 LOCK TABLES `borrow` WRITE;
 /*!40000 ALTER TABLE `borrow` DISABLE KEYS */;
+INSERT INTO `borrow` VALUES (1,1,1,'2026-08-24 16:15:50','2026-08-26 02:00:00'),(2,1,2,'2026-08-24 16:15:50',NULL),(3,2,2,'2026-08-24 16:15:50',NULL);
 /*!40000 ALTER TABLE `borrow` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -116,4 +117,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-08-26 15:29:38
+-- Dump completed on 2026-08-27  8:23:14

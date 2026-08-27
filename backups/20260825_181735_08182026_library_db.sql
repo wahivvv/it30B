@@ -37,7 +37,7 @@ CREATE TABLE `books` (
   `book_category` varchar(50) NOT NULL,
   `book_created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`book_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,7 +46,6 @@ CREATE TABLE `books` (
 
 LOCK TABLES `books` WRITE;
 /*!40000 ALTER TABLE `books` DISABLE KEYS */;
-INSERT INTO `books` VALUES (1,'Lord of the Rings','JRR Tolkien','Fantasy','2026-08-24 15:52:36'),(2,'Jurassic Park','Michael Crichton','Science Fiction','2026-08-24 15:52:36'),(3,'1984','George Orwell','Science Fiction','2026-08-24 15:52:36');
 /*!40000 ALTER TABLE `books` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -64,11 +63,11 @@ CREATE TABLE `borrow` (
   `borrow_date` timestamp NOT NULL DEFAULT current_timestamp(),
   `borrow_return_date` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`borrow_id`),
-  KEY `fk_borrow_student` (`student_id`),
-  KEY `fk_borrow_book` (`book_id`),
-  CONSTRAINT `fk_borrow_book` FOREIGN KEY (`book_id`) REFERENCES `books` (`book_id`),
-  CONSTRAINT `fk_borrow_student` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+  KEY `fk_student` (`student_id`),
+  KEY `fk_book` (`book_id`),
+  CONSTRAINT `fk_book` FOREIGN KEY (`book_id`) REFERENCES `books` (`book_id`),
+  CONSTRAINT `fk_student` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -116,4 +115,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-08-26 15:29:38
+-- Dump completed on 2026-08-25 18:17:39
