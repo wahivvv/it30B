@@ -84,14 +84,15 @@ INSERT INTO tblname(
 
 -- Insert statement #2: Insert Book
 
-INSERT INTO books(
+INSERT INTO books (
     book_title,
     book_author,
-    book_category,
-)VALUES
+    book_category
+) VALUES
 ('Harry Potter and the Sorcerer''s Stone', 'J.K. Rowling', 'Fantasy'),
 ('The Alchemist', 'Paulo Coelho', 'Fiction'),
-('To Kill a Mockingbird', 'Harper Lee', 'Classic');
+('To Kill a Mockingbird', 'Harper Lee', 'Classic'),
+('Noli Me Tangrene', 'Rene baterbonia', 'MVP');
 
 -- Insert statement #3: Insert Borrow
 
@@ -102,3 +103,4 @@ INSERT INTO borrow(
 (1,1),
 (2,2),
 (3,3),
+(4,4),
