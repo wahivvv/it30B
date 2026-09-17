@@ -1,16 +1,16 @@
--- #1 students table
+-- #1 STUDENTS TABLE
 CREATE TABLE IF NOT EXISTS students (
-    -- Primary key for the students table
+    -- Primary key
     student_id INT AUTO_INCREMENT PRIMARY KEY,
 
-    -- STudent name
+    -- Student name
     student_first_name VARCHAR(50) NOT NULL,
     student_last_name VARCHAR(50) NOT NULL,
 
     -- Student course
     student_course VARCHAR(50) NOT NULL,
 
-    -- Student created at timestamp
+    -- Created timestamp
     student_created_at TIMESTAMP NOT NULL
         DEFAULT CURRENT_TIMESTAMP
 
@@ -19,18 +19,18 @@ DEFAULT CHARSET=utf8mb4
 COLLATE=utf8mb4_general_ci;
 
 
--- #2 books table
+-- #2 BOOKS TABLE
 CREATE TABLE IF NOT EXISTS books (
-    -- Primary key for the books table
+    -- Primary key
     book_id INT AUTO_INCREMENT PRIMARY KEY,
 
     -- Book details
-    book_title VARCHAR(50) NOT NULL,
+    book_title VARCHAR(100) NOT NULL,
     book_author VARCHAR(100) NOT NULL,
     book_category VARCHAR(50) NOT NULL,
 
-    -- Book created at timestamp
-    book_created_at TIMESTAMP NOT NULL,
+    -- Created timestamp
+    book_created_at TIMESTAMP NOT NULL
         DEFAULT CURRENT_TIMESTAMP
 
 ) ENGINE=InnoDB
@@ -38,52 +38,55 @@ DEFAULT CHARSET=utf8mb4
 COLLATE=utf8mb4_general_ci;
 
 
--- #3 borrow table
+-- #3 BORROW TABLE
 CREATE TABLE IF NOT EXISTS borrow (
-    -- Primary key for the borrow table
+    -- Primary key
     borrow_id INT AUTO_INCREMENT PRIMARY KEY,
 
-    -- Foreign key references
+    -- Foreign keys
     student_id INT NOT NULL,
     book_id INT NOT NULL,
 
-    -- Borrow timestamp not null by default
-    borrow_date TIMESTAMP NOT NULL,
+    -- Borrow timestamp
+    borrow_date TIMESTAMP NOT NULL
         DEFAULT CURRENT_TIMESTAMP,
 
-    -- Borrow return timestamp null by default
-    borrow_return_date TIMESTAMP NULL,
+    -- Return timestamp
+    borrow_return_date TIMESTAMP NULL
         DEFAULT NULL,
 
-    -- Borrow table constraints and foreign keys
+    -- Student foreign key
     CONSTRAINT fk_borrow_student
         FOREIGN KEY (student_id)
         REFERENCES students(student_id)
         ON UPDATE CASCADE
         ON DELETE RESTRICT,
 
+    -- Book foreign key
     CONSTRAINT fk_borrow_book
         FOREIGN KEY (book_id)
-        REFERENCES students(book_id)
+        REFERENCES books(book_id)
         ON UPDATE CASCADE
-        ON DELETE RESTRICT,
+        ON DELETE RESTRICT
 
 ) ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
 COLLATE=utf8mb4_general_ci;
 
--- Insert statement #1: Insert Students
-INSERT INTO tblname(
-    student_
 
+-- #4 INSERT STUDENTS
+INSERT INTO students (
+    student_first_name,
+    student_last_name,
+    student_course
 ) VALUES
-('WAHIV','PAQUIBOT','BSIT'),
-('JUSHUA','BACO','BSCRIM');
-('NHESAN','BABOL','BSBA')
-('JOHN XYREX','SISTOSO','BSTCM')
+('WAHIV', 'PAQUIBOT', 'BSIT'),
+('JUSHUA', 'BACO', 'BSCRIM'),
+('NHESAN', 'BABOL', 'BSBA'),
+('JOHN XYREX', 'SISTOSO', 'BSTCM');
 
--- Insert statement #2: Insert Book
 
+-- #5 INSERT BOOKS
 INSERT INTO books (
     book_title,
     book_author,
@@ -92,15 +95,15 @@ INSERT INTO books (
 ('Harry Potter and the Sorcerer''s Stone', 'J.K. Rowling', 'Fantasy'),
 ('The Alchemist', 'Paulo Coelho', 'Fiction'),
 ('To Kill a Mockingbird', 'Harper Lee', 'Classic'),
-('Noli Me Tangrene', 'Rene baterbonia', 'MVP');
+('Noli Me Tangere', 'Jose Rizal', 'Classic');
 
--- Insert statement #3: Insert Borrow
 
-INSERT INTO borrow(
+-- #6 INSERT BORROW RECORDS
+INSERT INTO borrow (
     student_id,
     book_id
-)VALUES
-(1,1),
-(2,2),
-(3,3),
-(4,4),
+) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4);
