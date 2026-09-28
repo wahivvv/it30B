@@ -1,6 +1,6 @@
 <?php 
  
-// Database Connection 
+//Database Connection 
 $host = 'localhost'; 
 $db = 'it30b_lab_db'; 
 $user = 'root'; 
@@ -15,9 +15,9 @@ $options = [
     PDO::ATTR_EMULATE_PREPARES => false, 
 ]; 
  
-try { 
-    $pdo = new PDO($dsn, $user, $pass, $options); 
-} catch(PDOException $e) { 
+try{ 
+    $pdo = new PDO($dsn,$user,$pass, $options); 
+}catch(PDOException $e){ 
     die("Database connection failed" . $e->getMessage()); 
 } 
  
@@ -29,14 +29,9 @@ $section = $_GET['section'] ?? 'students';
  
 // Determine CRUD Operation 
 $action = $_GET['action'] ?? ''; 
-
-
-// ==================================================
-// STUDENTS
-// ==================================================
-
+ 
 // Fetch Students 
-if($section === 'students') { 
+if($section === 'students'){ 
  
     $stmt = $pdo->query(" 
         SELECT * 
@@ -46,18 +41,17 @@ if($section === 'students') {
  
     $students = $stmt->fetchAll(); 
 } 
-
-
-// Create Student 
-if($section === 'students' && $action === 'create') { 
  
-    if($_SERVER['REQUEST_METHOD'] === 'POST') { 
+// Create Student 
+if($section === 'students' && $action === 'create'){ 
+ 
+    if($_SERVER['REQUEST_METHOD'] === 'POST'){ 
  
         $firstName = trim($_POST['student_first_name'] ?? ''); 
         $lastName = trim($_POST['student_last_name'] ?? ''); 
         $course = trim($_POST['student_course'] ?? ''); 
  
-        if($firstName !== '' && $lastName !== '' && $course !== '') { 
+        if($firstName !== '' && $lastName !== '' && $course !== ''){ 
  
             $sql = " 
                 INSERT INTO students( 
@@ -81,13 +75,13 @@ if($section === 'students' && $action === 'create') {
         } 
     } 
 } 
-
-
+ 
 // Update Student 
-if($section === 'students' && $action === 'update') { 
+if($section === 'students' && $action === 'update'){ 
      
     $studentId = (int) ($_GET['id'] ?? 0); 
     
+    // Retrieve student info by default 
     $stmt = $pdo->prepare(" 
         SELECT *  
         FROM students 
@@ -98,11 +92,12 @@ if($section === 'students' && $action === 'update') {
  
     $student = $stmt->fetch(); 
  
-    if(!$student) { 
+    if(!$student){ 
         die("Student Not Found"); 
     } 
  
-    if($_SERVER['REQUEST_METHOD'] === 'POST') { 
+    // Update student on post 
+    if($_SERVER['REQUEST_METHOD'] === 'POST'){ 
  
         $firstName = trim($_POST['student_first_name'] ?? ''); 
         $lastName = trim($_POST['student_last_name'] ?? ''); 
@@ -129,24 +124,8 @@ if($section === 'students' && $action === 'update') {
         header("Location: index.php?section=students"); 
         exit; 
     } 
+ 
 } 
-
-
-// Delete Student
-if($section === 'students' && $action === 'delete') {
-
-    $studentId = (int) ($_GET['id'] ?? 0);
-
-    $stmt = $pdo->prepare("
-        DELETE FROM students
-        WHERE student_id = ?
-    ");
-
-    $stmt->execute([$studentId]);
-
-    header("Location: index.php?section=students");
-    exit;
-}
 
 
 // ==================================================
@@ -154,7 +133,7 @@ if($section === 'students' && $action === 'delete') {
 // ==================================================
 
 // Fetch Books
-if($section === 'books') {
+if($section === 'books'){
 
     $stmt = $pdo->query("
         SELECT *
@@ -167,15 +146,15 @@ if($section === 'books') {
 
 
 // Create Book
-if($section === 'books' && $action === 'create') {
+if($section === 'books' && $action === 'create'){
 
-    if($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
         $bookTitle = trim($_POST['book_title'] ?? '');
         $bookAuthor = trim($_POST['book_author'] ?? '');
         $bookCategory = trim($_POST['book_category'] ?? '');
 
-        if($bookTitle !== '' && $bookAuthor !== '' && $bookCategory !== '') {
+        if($bookTitle !== '' && $bookAuthor !== '' && $bookCategory !== ''){
 
             $sql = "
                 INSERT INTO books(
@@ -202,10 +181,11 @@ if($section === 'books' && $action === 'create') {
 
 
 // Update Book
-if($section === 'books' && $action === 'update') {
+if($section === 'books' && $action === 'update'){
 
     $bookId = (int) ($_GET['id'] ?? 0);
 
+    // Retrieve book info
     $stmt = $pdo->prepare("
         SELECT *
         FROM books
@@ -216,11 +196,12 @@ if($section === 'books' && $action === 'update') {
 
     $book = $stmt->fetch();
 
-    if(!$book) {
+    if(!$book){
         die("Book Not Found");
     }
 
-    if($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Update book on post
+    if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
         $bookTitle = trim($_POST['book_title'] ?? '');
         $bookAuthor = trim($_POST['book_author'] ?? '');
@@ -249,28 +230,9 @@ if($section === 'books' && $action === 'update') {
     }
 }
 
-
-// Delete Book
-if($section === 'books' && $action === 'delete') {
-
-    $bookId = (int) ($_GET['id'] ?? 0);
-
-    $stmt = $pdo->prepare("
-        DELETE FROM books
-        WHERE book_id = ?
-    ");
-
-    $stmt->execute([$bookId]);
-
-    header("Location: index.php?section=books");
-    exit;
-}
-
 ?>
-
 <!DOCTYPE html> 
 <html lang="en"> 
-
 <head> 
     <meta charset="UTF-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
@@ -302,7 +264,6 @@ if($section === 'books' && $action === 'delete') {
             </a> 
         </p> 
 
-
         <?php if($action === 'create'): ?> 
 
             <h2>Create Student</h2> 
@@ -314,7 +275,7 @@ if($section === 'books' && $action === 'delete') {
                     <br> 
                     <input type="text" 
                            name="student_first_name" 
-                           required> 
+                           required /> 
                 </p> 
 
                 <p> 
@@ -322,7 +283,7 @@ if($section === 'books' && $action === 'delete') {
                     <br> 
                     <input type="text" 
                            name="student_last_name" 
-                           required> 
+                           required /> 
                 </p> 
 
                 <p> 
@@ -330,7 +291,7 @@ if($section === 'books' && $action === 'delete') {
                     <br> 
                     <input type="text" 
                            name="student_course" 
-                           required> 
+                           required /> 
                 </p> 
 
                 <button type="submit"> 
@@ -342,7 +303,6 @@ if($section === 'books' && $action === 'delete') {
                 </a> 
 
             </form> 
-
 
         <?php elseif($action === 'update'): ?> 
 
@@ -356,7 +316,7 @@ if($section === 'books' && $action === 'delete') {
                     <input type="text" 
                            name="student_first_name" 
                            value="<?= htmlspecialchars($student['student_first_name']) ?>" 
-                           required> 
+                           required /> 
                 </p> 
 
                 <p> 
@@ -365,7 +325,7 @@ if($section === 'books' && $action === 'delete') {
                     <input type="text" 
                            name="student_last_name" 
                            value="<?= htmlspecialchars($student['student_last_name']) ?>" 
-                           required> 
+                           required /> 
                 </p> 
 
                 <p> 
@@ -374,7 +334,7 @@ if($section === 'books' && $action === 'delete') {
                     <input type="text" 
                            name="student_course" 
                            value="<?= htmlspecialchars($student['student_course']) ?>" 
-                           required> 
+                           required /> 
                 </p> 
 
                 <button type="submit"> 
@@ -386,7 +346,6 @@ if($section === 'books' && $action === 'delete') {
                 </a> 
                  
             </form> 
-
 
         <?php else: ?> 
 
@@ -437,10 +396,7 @@ if($section === 'books' && $action === 'delete') {
 
                                 | 
 
-                                <a href="index.php?section=students&action=delete&id=<?= $student['student_id'] ?>"
-                                   onclick="return confirm('Are you sure you want to delete this student?')">
-                                    Delete
-                                </a> 
+                                <a>Delete</a> 
 
                             </td> 
 
@@ -482,7 +438,7 @@ if($section === 'books' && $action === 'delete') {
                     <br> 
                     <input type="text" 
                            name="book_title" 
-                           required> 
+                           required /> 
                 </p> 
 
                 <p> 
@@ -490,7 +446,7 @@ if($section === 'books' && $action === 'delete') {
                     <br> 
                     <input type="text" 
                            name="book_author" 
-                           required> 
+                           required /> 
                 </p> 
 
                 <p> 
@@ -498,7 +454,7 @@ if($section === 'books' && $action === 'delete') {
                     <br> 
                     <input type="text" 
                            name="book_category" 
-                           required> 
+                           required /> 
                 </p> 
 
                 <button type="submit"> 
@@ -524,7 +480,7 @@ if($section === 'books' && $action === 'delete') {
                     <input type="text" 
                            name="book_title" 
                            value="<?= htmlspecialchars($book['book_title']) ?>" 
-                           required> 
+                           required /> 
                 </p> 
 
                 <p> 
@@ -533,7 +489,7 @@ if($section === 'books' && $action === 'delete') {
                     <input type="text" 
                            name="book_author" 
                            value="<?= htmlspecialchars($book['book_author']) ?>" 
-                           required> 
+                           required /> 
                 </p> 
 
                 <p> 
@@ -542,7 +498,7 @@ if($section === 'books' && $action === 'delete') {
                     <input type="text" 
                            name="book_category" 
                            value="<?= htmlspecialchars($book['book_category']) ?>" 
-                           required> 
+                           required /> 
                 </p> 
 
                 <button type="submit"> 
@@ -607,10 +563,7 @@ if($section === 'books' && $action === 'delete') {
 
                                 | 
 
-                                <a href="index.php?section=books&action=delete&id=<?= $book['book_id'] ?>"
-                                   onclick="return confirm('Are you sure you want to delete this book?')">
-                                    Delete
-                                </a> 
+                                <a>Delete</a> 
 
                             </td> 
 
@@ -633,7 +586,6 @@ if($section === 'books' && $action === 'delete') {
     <?php if($section === 'borrow'): ?> 
 
         <h1>Borrow</h1> 
-
     <?php endif; ?> 
 
 
